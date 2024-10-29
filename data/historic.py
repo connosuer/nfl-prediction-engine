@@ -13,11 +13,13 @@ CLEANING
 """
 
 df = df[df['schedule_season'] >= 2010]
+
 df = df.drop(columns=['Unnamed: 17', 'Unnamed: 18', 
                     'Unnamed: 19', 'Unnamed: 20', 
                     'Unnamed: 21', 'Unnamed: 22',
                     'Unnamed: 23', 'Unnamed: 24', 'Unnamed: 25',
                     'weather_humidity', 'weather_detail'])
+
 print(df.info())
 
 df.to_csv('data/historic_clean.csv', index=False)
