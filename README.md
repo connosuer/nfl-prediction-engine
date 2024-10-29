@@ -1,4 +1,4 @@
 # SportsBetting-AI
 
-### Initial Workflow
+### High Level Workflow
 ![Workflow](/Media/initial_workflow.png)
