@@ -8,8 +8,6 @@ import numpy as np
         FEATURE SCALING & ENCODING
 - one-hot encode categorical variables
 - normalize numericals between 0 and 1 (relu) or -1 and 1 (sigmoid)
-
-
 '''
 
 
@@ -20,16 +18,19 @@ import numpy as np
 - initialize parameters
 '''
 
+
 '''
         ACTIVATION FUNCTIONS
 - Define linear and relu algorithms along w/ their derivatives
 '''
+
 
 '''
         FORWARD PROP
 - Define input -> output algorithm
 - compute cost function
 '''
+
 
 '''
         BACK PROP
