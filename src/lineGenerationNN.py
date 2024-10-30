@@ -1,1 +1,27 @@
 # Line Generation Neural Network
+
+'''
+FEATURE SCALING & ENCODING
+'''
+
+
+'''
+NEURAL NETWORK SETUP
+'''
+
+'''
+ACTIVATION FUNCTIONS
+'''
+
+'''
+FORWARD PROP
+'''
+
+'''
+BACK PROP
+'''
+
+
+'''
+TRAINING AND OPTIMIZATION
+'''
