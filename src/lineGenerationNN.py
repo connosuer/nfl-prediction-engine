@@ -4,6 +4,8 @@
 import pandas as pd
 import numpy as np
 
+df = pd.read_csv('../data/historic_clean.csv')
+
 '''
         FEATURE SCALING & ENCODING
 - one-hot encode categorical variables
