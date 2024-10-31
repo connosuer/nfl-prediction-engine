@@ -2,8 +2,11 @@
 
 # imports
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-df = pd.read_csv('data/historic.csv')
+df = pd.read_csv('historic.csv')
 
 """
 CLEANING
@@ -36,6 +39,8 @@ df['weather_wind_mph'] = df['weather_wind_mph'].fillna(weather_means['weather_wi
 df = df.dropna(subset=['weather_temperature'])
 df = df.dropna(subset=['weather_wind_mph'])
 
+df.drop(columns=['stadium', 'stadium_neutral'], inplace=True)
+
 print(df.info())
-df.to_csv('data/historic_clean.csv', index=False)
+df.to_csv('historic_clean.csv', index=False)
 
