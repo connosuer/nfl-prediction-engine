@@ -1,6 +1,5 @@
 # Line Generation Neural Network
 
-
 import pandas as pd
 import numpy as np
 
@@ -14,34 +13,44 @@ df = pd.read_csv('../data/historic_clean.csv')
 - Define layer dimensions
 - initialize parameters
 '''
-# Data Split
 
-# Initialize params
-def __init__(layers):
-    np.random.seed(1)
-    params = {}
-    L = len(layers)
-    # He initialization
-    # formula: w = N(0, sqrt(2/n_l-1)
-    # N = normal distribution
-    # l = layer
-    # n_l-1 = neuron count in prev layer
-    for curr in range(1, L):
-        params['W' + str(curr)] = np.random.randn(layers[curr], layers[curr - 1]) * np.sqrt(2 / layers[curr - 1])
-        # initialize bias at 0
-        params['b' + str(curr)] = np.zeros((layers[curr], 1))
-    print(params)
-    return params
+class NeuralNetwork:
+    def __init__(self, layers, activation='relu', optimizer='momentum', learning=0.01, beta=0.9):
+        self.layers = layers
+        self.activation = activation
+        self.optimizer = optimizer
+        self.learning = learning
+        self.beta = beta
+        self.params = self._init_params()
+        self.velo = self._init_velo()
+        self.cache = {}
+        self.gradient = {}
+
+    def _activation_function(self, x):
+        if x == 'relu':
+            return self._relu, self._relu_derivative
+        else:
+            raise ValueError()
+
+    def _init_params(self):
+        np.random.seed(0)
+        params = {}
+        L = len(self.layers)
+        for layer in range(1, L):
+            params['W' + str(layer)] = \
+                (np.random.randn(self.layers[layer], self.layers[layer - 1])
+                 ) * np.sqrt(2 / self.layers(layer - 1))
+            params['b' + str(layer)] = np.zeros((self.layers[layer], 1))
+            return params
+
 
 '''
         FORWARD PROP
 - Define input -> output algorithm
 - compute cost function
 '''
-def forward(X, params):
-    cache = {}
-    L = len(params)
-    cache["X"] = x
+
+
 
 
 
@@ -49,8 +58,6 @@ def forward(X, params):
         ACTIVATION FUNCTIONS
 - Define linear and relu algorithms along w/ their derivatives
 '''
-def relu
-
 
 
 
