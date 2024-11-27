@@ -15,6 +15,7 @@ df = pd.read_csv('../data/historic_clean.csv')
 '''
 
 class NeuralNetwork:
+    # Initialize getters
     def __init__(self, layers, activation='relu', optimizer='momentum', learning=0.01, beta=0.9):
         self.layers = layers
         self.activation = activation
@@ -26,16 +27,19 @@ class NeuralNetwork:
         self.cache = {}
         self.gradient = {}
 
+    # Set activation function
     def _activation_function(self, x):
         if x == 'relu':
             return self._relu, self._relu_derivative
         else:
             raise ValueError()
 
+    # initialize parameters, weights, and bias
     def _init_params(self):
         np.random.seed(0)
         params = {}
         L = len(self.layers)
+        # He Initialization Formula: W^[layer] ~ N(0, (2/n^(layer-1))
         for layer in range(1, L):
             params['W' + str(layer)] = \
                 (np.random.randn(self.layers[layer], self.layers[layer - 1])
@@ -43,6 +47,7 @@ class NeuralNetwork:
             params['b' + str(layer)] = np.zeros((self.layers[layer], 1))
             return params
 
+    # Initialize velocity for momentum calculation
     def _init_velo(self):
         velo = {}
         L = len(self.layers)
