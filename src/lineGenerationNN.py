@@ -114,4 +114,28 @@ class NeuralNetwork:
         TRAINING AND OPTIMIZATION
     '''
 
-    def train(self):
+    def train(self, X, Y, epochs=1000, batchsize=64):
+        slope = X.shape[0]
+        X_T = X.T
+        Y_T = Y.reshape(1, -1)
+        batches = slope // batchsize
+        cost_vals = []
+        for epoch in range(epochs):
+            permutate = np.random.permutation(slope)
+            X_scramble = X[permutate]
+            Y_scramble = Y[permutate]
+            for batch in range(batches):
+                start = batch * batchsize
+                end = min(start + batchsize, slope)
+                X_batch = X_scramble[start:end]
+                Y_batch = Y_scramble[start:end]
+                Y_pred = self.forward_feed(X_batch)
+                C = self.cost(Y_pred, Y_batch.T)
+                self.backward_feed(Y_batch.T)
+                self.update_network()
+                print(f"Training Round: {epoch}; Cost: {C}")
+            return cost_vals
+        def prediction(self, X_pred):
+            Y_pred = self.forward_feed(X_pred)
+            return Y_pred.T
+
