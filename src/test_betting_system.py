@@ -14,11 +14,11 @@ def test_betting_system():
     print("Initializing system components...")
     feature_processor = NFLFeatureProcessor()
 
-    # Configure neural network with adjusted architecture
+    # Configure neural network - simplified architecture
     input_features = 9
     neural_network = NeuralNetwork(
-        layers=[input_features, 32, 16, 8, 1],  # Deeper network
-        learning=0.001,  # Reduced learning rate
+        layers=[input_features, 16, 8, 1],  # Simplified network
+        learning=0.001,
         beta=0.9
     )
 
@@ -56,7 +56,7 @@ def test_betting_system():
     feature_stds = X_train.std(axis=0)
     X_train = (X_train - feature_means) / feature_stds
 
-    # Train the model with more epochs
+    # Train the model
     print("Training neural network...")
     neural_network.train(X_train, y_train, epochs=2000, batchsize=32)
 
@@ -75,24 +75,24 @@ def test_betting_system():
     print(f"Min predicted spread: {predictions.min():.2f}")
     print(f"Max predicted spread: {predictions.max():.2f}")
 
-    # Find value bets with higher threshold
+    # Find value bets
     opportunities = betting_system.find_value_bets(
         test_data,
         predictions,
-        minimum_edge=4.0  # More selective threshold
+        minimum_edge=4.0  # Using our new conservative threshold
     )
 
-    # Analyze results
     print(f"\nFound {len(opportunities)} potential betting opportunities")
 
     if len(opportunities) > 0:
         total_pnl = 0
         winning_bets = 0
+        total_stake = 0
 
         for opp in opportunities:
             game_data = test_data.loc[opp['game_id']]
             betting_system.execute_trade(opp)
-
+            
             pnl = betting_system.evaluate_position(
                 opp,
                 actual_score_home=game_data['score_home'],
@@ -100,17 +100,21 @@ def test_betting_system():
             )
 
             total_pnl += pnl
+            total_stake += opp['recommended_stake']
             if pnl > 0:
                 winning_bets += 1
 
+        # Enhanced results reporting
         print("\nBacktesting Results:")
         print(f"Total Bets: {len(opportunities)}")
         print(f"Winning Bets: {winning_bets}")
         print(f"Win Rate: {(winning_bets / len(opportunities) * 100):.2f}%")
         print(f"Total P&L: ${total_pnl:.2f}")
-        print(f"ROI: {(total_pnl / 10000 * 100):.2f}%")
-        print(f"Average Bet Size: ${sum(opp['recommended_stake'] for opp in opportunities) / len(opportunities):.2f}")
+        print(f"Total Stake: ${total_stake:.2f}")
+        print(f"ROI: {(total_pnl / total_stake * 100):.2f}%")
+        print(f"Average Bet Size: ${total_stake / len(opportunities):.2f}")
 
+        # Print sample opportunities with more detail
         print("\nSample Betting Opportunities:")
         for opp in opportunities[:5]:
             print(f"\nDate: {opp['date']}")
