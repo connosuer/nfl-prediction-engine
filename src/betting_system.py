@@ -2,7 +2,7 @@ from typing import Dict, List, Tuple, Optional
 import pandas as pd
 import numpy as np
 from featureEngineering import NFLFeatureProcessor
-from lineGenerationNN import NeuralNetwork
+from nn import NeuralNetwork
 
 
 class NFLBettingSystem:

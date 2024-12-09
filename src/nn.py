@@ -4,11 +4,12 @@ import numpy as np
 class NeuralNetwork:
     '''
         NEURAL NETWORK SETUP
+    ---------------------------
     - Initialize parameters
     - Set activation functions
     - Choose optimizer and learning settings
     '''
-    def __init__(self, layers, activation='relu', optimizer='momentum', learning=0.01, beta=0.9):
+    def __init__(self, layers, activation='relu', output_activation='linear', optimizer='momentum', learning=0.01, beta=0.9):
         """
         Initializes the neural network.
         Args:
@@ -20,6 +21,7 @@ class NeuralNetwork:
         """
         self.layers = layers
         self.activation = activation
+        self.output_activation = output_activation
         self.optimizer = optimizer
         self.learning = learning
         self.beta = beta
@@ -40,7 +42,12 @@ class NeuralNetwork:
         if x == 'relu':
             return self._relu, self._relu_derivative
         else:
-            raise ValueError("Unsupported activation function")
+            raise ValueError("Check activation function")
+    def _output_function(self, x):
+        if x == 'linear':
+            return self._linear
+        else:
+            raise ValueError("Check Output function")
 
     def _init_params(self):
         """
@@ -70,6 +77,7 @@ class NeuralNetwork:
         for layer in range(1, L):
             velo['dW' + str(layer)] = np.zeros_like(self.params['W' + str(layer)])
             velo['db' + str(layer)] = np.zeros_like(self.params['b' + str(layer)])
+        print(velo)
         return velo
 
     '''
