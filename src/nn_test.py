@@ -58,17 +58,42 @@ def nn_test():
     )
 
     # train
-    print("Training the neural network...")
-    cost_vals = nn.train(X_train, y_train, epochs=1400, batchsize=32)
+    cost_vals = nn.train(X_train, y_train, epochs=1000, batchsize=32)
 
     # setup data for cost plot
-    filtered_epochs = range(0, len(cost_vals), 100)
-    filtered_costs = [cost_vals[epoch] for epoch in filtered_epochs]
+    filtered_epochs_10 = range(0, len(cost_vals), 10)
+    filtered_costs_10 = [cost_vals[epoch] for epoch in filtered_epochs_10]
 
-    # Plot cost as training progresses
+    coefficients = np.polyfit(filtered_epochs_10, filtered_costs_10, deg=1)
+    trend_line = np.poly1d(coefficients)
+
+    trend_x = np.linspace(min(filtered_epochs_10), max(filtered_epochs_10), 500)
+    trend_y = trend_line(trend_x)
+
+    # Plot cost and trend line
     plt.figure(figsize=(8, 6))
-    plt.plot(filtered_epochs, filtered_costs, 'o-', label='Training Cost')  # Use 'o-' to add points
-    plt.title('Cost Over Time')
+    plt.plot(filtered_epochs_10, filtered_costs_10, 'o-', label='Training Cost')
+    plt.plot(trend_x, trend_y, 'r--', label='Trend')
+    plt.title('Cost Over Time (Every 10 Epochs)')
+    plt.xlabel('Epoch')
+    plt.ylabel('Cost')
+    plt.grid(True)
+    plt.legend()
+    plt.show()
+
+    filtered_epochs_100 = range(0, len(cost_vals), 100)
+    filtered_costs_100 = [cost_vals[epoch] for epoch in filtered_epochs_100]
+
+    coefficients = np.polyfit(filtered_epochs_100, filtered_costs_100, deg=1)
+    trend_line = np.poly1d(coefficients)
+
+    trend_x = np.linspace(min(filtered_epochs_100), max(filtered_epochs_100), 500)
+    trend_y = trend_line(trend_x)
+
+    plt.figure(figsize=(8, 6))
+    plt.plot(filtered_epochs_100, filtered_costs_100, 'o-', label='Training Cost')
+    plt.plot(trend_x, trend_y, 'r--', label='Trend')
+    plt.title('Cost Over Time (Every 100 Epochs)')
     plt.xlabel('Epoch')
     plt.ylabel('Cost')
     plt.grid(True)
@@ -82,9 +107,7 @@ def nn_test():
     rmse = np.sqrt(mse)
     mae = np.mean(np.abs(y_pred - y_test))
     print("\nEvaluation on Test Set:")
-    print(f"MSE: {mse:.4f}")
     print(f"RMSE: {rmse:.4f}")
-    print(f"MAE: {mae:.4f}")
 
     # Sample predictions vs actual
     print("\nSample Predictions vs Actual:")
