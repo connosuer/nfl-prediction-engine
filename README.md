@@ -9,3 +9,7 @@
 Kaggle dataset comprised of the majority of NFL football games dating back to 1966 with 25 unique features for each game.
 
 ### Line Generation Neural Network
+
+**Cost Graphs Over Epochs**
+![cost_10.png](Media%2Fcost_10.png)
+![cost_100.png](Media%2Fcost_100.png)
