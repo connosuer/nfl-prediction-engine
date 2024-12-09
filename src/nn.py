@@ -9,7 +9,7 @@ class NeuralNetwork:
     - Set activation functions
     - Choose optimizer and learning settings
     '''
-    def __init__(self, layers, activation='relu', output_activation='linear', optimizer='momentum', learning=0.01, beta=0.9):
+    def __init__(self, layers, activation='relu', output_activation='linear', optimizer='momentum', learning=0.005, beta=0.9):
         """
         Initializes the neural network.
         Args:
@@ -77,8 +77,10 @@ class NeuralNetwork:
         for layer in range(1, L):
             velo['dW' + str(layer)] = np.zeros_like(self.params['W' + str(layer)])
             velo['db' + str(layer)] = np.zeros_like(self.params['b' + str(layer)])
-        print(velo)
         return velo
+
+
+
 
     '''
         ACTIVATION FUNCTIONS
