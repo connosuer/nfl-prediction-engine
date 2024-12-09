@@ -12,5 +12,4 @@ Kaggle dataset comprised of the majority of NFL football games dating back to 19
 
 **Cost Graphs Over Epochs**
 
-<img src="Media/cost_10.png" alt="Cost Graph - 10 Epochs" width="50%">
-<img src="Media/cost_100.png" alt="Cost Graph - 100 Epochs" width="50%">
+<img src="Media/cost_10.png" alt="Cost Graph - 10 Epochs" width="40%"> <img src="Media/cost_100.png" alt="Cost Graph - 100 Epochs" width="40%">
