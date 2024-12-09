@@ -4,6 +4,7 @@ import numpy as np
 from featureEngineering import NFLFeatureProcessor
 from nn import NeuralNetwork
 
+
 class NFLBettingSystem:
     def __init__(self,
                  feature_processor: NFLFeatureProcessor,
@@ -34,51 +35,52 @@ class NFLBettingSystem:
         """Generate spread predictions using the neural network with double clipping"""
         prediction_features = self._prepare_prediction_features(features)
         raw_predictions = self.neural_network.prediction(prediction_features)
-        
+
         # First clip after initial prediction
         clipped_predictions = np.clip(raw_predictions, -14, 14)
-        
+
         # sanity checks
         mean_spread = np.mean(clipped_predictions)
         if abs(mean_spread) > 7:  # If predictions seem biased
             clipped_predictions -= mean_spread  # Center around zero
             clipped_predictions = np.clip(clipped_predictions, -14, 14)  # Clip again
-            
+
         return clipped_predictions
 
     def find_value_bets(self,
-                       features: pd.DataFrame,
-                       predicted_spreads: np.ndarray,
-                       minimum_edge: float = 4.0) -> List[Dict]:
+                        features: pd.DataFrame,
+                        predicted_spreads: np.ndarray,
+                        minimum_edge: float = 4.0) -> List[Dict]:
         """Identify betting opportunities with double validation"""
         opportunities = []
         if len(predicted_spreads.shape) > 1:
             predicted_spreads = predicted_spreads.flatten()
-        
+
         # Final clip before edge calculation
         predicted_spreads = np.clip(predicted_spreads, -14, 14)
 
         # Calculate average market spread for comparison
         market_spreads = []
         for _, row in features.iterrows():
-            market_spread = row['spread_favorite'] if row['team_favorite_id'] == row['team_home'] else -row['spread_favorite']
+            market_spread = row['spread_favorite'] if row['team_favorite_id'] == row['team_home'] else -row[
+                'spread_favorite']
             market_spreads.append(market_spread)
-        
+
         avg_market = np.mean(market_spreads)
-        
+
         for idx, row in features.iterrows():
             market_spread = market_spreads[idx]
             predicted_spread = predicted_spreads[idx]
-            
+
             # Additional sanity check - avoid systematic bias
             if abs(predicted_spread - avg_market) > 14:
                 continue
-                
+
             edge = predicted_spread - market_spread
             if self._is_valid_bet(edge, market_spread, row):
                 bet_side = 'home' if predicted_spread > market_spread else 'away'
                 stake = self._calculate_stake(abs(edge))
-                
+
                 opportunities.append({
                     'game_id': idx,
                     'date': row['schedule_date'],
@@ -100,22 +102,22 @@ class NFLBettingSystem:
         # so must have significant edge but not unrealistic
         if abs(edge) < 4.0 or abs(edge) > 10.0:  # Cap maximum edge
             return False
-            
+
         # More conservative limits on spread ranges
         if abs(market_spread) > 7:
             return abs(edge) >= 5.0 and abs(edge) <= 8.0  # Tighter range for big spreads
-            
+
         # No bets on huge spreads
         if abs(market_spread) > 10:
             return False
-            
+
         # Check team form (basic)
         betting_on_home = edge > 0
         if betting_on_home and row['home_last3_points'] < row['home_last3_points_allowed']:
             return False
         elif not betting_on_home and row['away_last3_points'] < row['away_last3_points_allowed']:
             return False
-            
+
         # Check reasonable scoring ranges
         if row['home_last3_points'] > 40 or row['away_last3_points'] > 40:
             return False  # Avoid betting after unusual scoring games
@@ -128,16 +130,16 @@ class NFLBettingSystem:
         """
         # Base stake is 2% of bankroll
         base_stake = self.bankroll * 0.02
-        
+
         # Adjust based on edge (up to 2.5x for large edges)
         edge_multiplier = min(1 + (edge - 4) * 0.1, 2.5)
-        
+
         stake = base_stake * edge_multiplier
-        
+
         # Hard limits
         min_stake = 100
         max_stake = self.bankroll * 0.05
-        
+
         return round(min(max(stake, min_stake), max_stake), 2)
 
     def evaluate_position(self, position: Dict, actual_score_home: float, actual_score_away: float) -> float:
@@ -145,13 +147,13 @@ class NFLBettingSystem:
         Evaluate the P&L of a position based on actual game results
         """
         actual_spread = actual_score_home - actual_score_away
-        
+
         # Determine if bet won
         if position['bet_side'] == 'home':
             won_bet = actual_spread > position['market_spread']
         else:
             won_bet = actual_spread < position['market_spread']
-        
+
         # Calculate P&L (assuming -110 odds)
         if won_bet:
             return position['recommended_stake'] * 0.909

@@ -92,7 +92,7 @@ def test_betting_system():
         for opp in opportunities:
             game_data = test_data.loc[opp['game_id']]
             betting_system.execute_trade(opp)
-            
+
             pnl = betting_system.evaluate_position(
                 opp,
                 actual_score_home=game_data['score_home'],
