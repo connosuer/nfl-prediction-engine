@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from betting_system import NFLBettingSystem
 from featureEngineering import NFLFeatureProcessor
-from lineGenerationNN import NeuralNetwork
+from nn import NeuralNetwork
 
 
 def test_betting_system():
