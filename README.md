@@ -11,5 +11,5 @@ Kaggle dataset comprised of the majority of NFL football games dating back to 19
 ### Line Generation Neural Network
 
 **Cost Graphs Over Epochs**
-![cost_10.png](Media%2Fcost_10.png)
-![cost_100.png](Media%2Fcost_100.png)
+
+<img src="Media/cost_10.png" alt="Cost Graph - 10 Epochs" width="40%"> <img src="Media/cost_100.png" alt="Cost Graph - 100 Epochs" width="40%">
