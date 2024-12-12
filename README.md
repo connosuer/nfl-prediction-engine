@@ -27,6 +27,26 @@
 - cache - Stores intermediate calculations.
 - gradient - Stores computed gradients.
 
+**Forward Propagation**
+- Inputs 'X' are transposed onto a matrix as:
+~~~
+A = X.T
+self.cache['A0'] = A
+~~~
+- Input and updated weight matrix's are multiplied and bias is added:
+~~~
+Z = np.dot(W, A) + b
+~~~
+- Output is ran through the chosen activation function:
+~~~
+A = self.activation_func(Z)
+~~~
+- Cache the new input matrix 'A' and dot product + bias result 'Z':
+~~~
+self.cache['A' + str(layer)] = A
+self.cache['Z' + str(layer)] = Z
+~~~
+- Calculate the cost of each iteration with the Mean Squared Error (MSE) cost function:
 
 **Cost Graphs Over Epochs**
 
