@@ -174,8 +174,8 @@ won_bet = actual_spread > position['market_spread']  # For home bets
 The neural network we engineered succeeded in accurately predicting NFL scores after
 sufficient training.
 
-Cost *(First Training Round)*: 0.52 \
-Cost *(Last Training Round)*: 0.16 \
+Cost *(First Training Round)*: 0.51 \
+Cost *(Last Training Round)*: 0.17 \
 RMSE Score: 2.52
 
 Randomly Selected Test Results: \
@@ -186,6 +186,45 @@ Predicted: -7.35, Actual: -7.00
 
 Cost Graphs Over Epochs:
 
-<img src="Media/cost_10.png" alt="Cost Graph - 10 Epochs" width="45%"> <img src="Media/cost_100.png" alt="Cost Graph - 100 Epochs" width="45%">
+<img src="Media/cost_10.png" alt="Cost Graph - 10 Epochs" width="40%"> <img src="Media/cost_100.png" alt="Cost Graph - 100 Epochs" width="40%">
 
 *From nn_test.py*
+
+**Betting System**
+
+The overall betting system shows a substantially superior betting strategy compared to standard industry methods.
+
+
+*Backtesting Results:* \
+Selected Bets: **181** \
+Winning Bets: **145** \
+Win Rate: **80.11%** \
+Total P&L: **$25799.73** \
+Total Stake: **$47485.33** \
+ROI: **54.33%** \
+Average Bet Size: **$262.35**
+
+Sample Betting Opportunities:
+
+Game: Philadelphia Eagles vs San Francisco 49ers \
+Market Spread: 3.5 \
+Predicted Spread: -4.1 \
+Edge: 7.6 points \
+Bet Side: away \
+Recommended Stake: $271.49 
+
+Game: Los Angeles Rams vs Tampa Bay Buccaneers \
+Market Spread: 1.0 \
+Predicted Spread: -3.6 \
+Edge: 4.6 points \
+Bet Side: away \
+Recommended Stake: $212.24 
+
+Game: New England Patriots vs New Orleans Saints \
+Market Spread: 3.0 \
+Predicted Spread: -5.2 \
+Edge: 8.2 points \
+Bet Side: away \
+Recommended Stake: $284.28
+
+*From test_betting_system.py*
