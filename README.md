@@ -27,15 +27,29 @@ particular NFL game.
 
 **Feature Engineering**
 
+- Game Metrics Calculated:
+  - Total Points and Point Differential
+  - Is Home Favorite? (binary flag)
+  - Spread Performance & Over/Under Performance
+
+
+- Team Metrics Calculated:
+  - Average Points For/Against
+  - Spread Cover Rate
+  - Win Streak
+
+
+- Relative Power Ranking System Initialized
+
 ### Neural Network
-**Neural Network Input Initialization**
+**Input Initialization**
 - layers - Specifies the number of neurons in each layer and the configuration of neurons.
 - activation - Activation function for hidden layers.
 - output_activation - Activation function for output layer.
 - learning - Network learning rate.
 - beta - Momentum coefficient
 
-**Neural Network Component Initialization**
+**Component Initialization**
 - params - Initializes weights and biases using He Initialization.
 - velo - Initializes velocity calculation for momentum optimization.
 
@@ -116,6 +130,42 @@ return Y_pred.T
 ~~~
 
 ### Betting System
+**1. Initialize Feature Engineering**
+~~~
+processed_data = self.feature_processor.process_initial_features(game_data)
+~~~
+**2. Generate Predictions using neural network**
+~~~
+prediction_features = self._prepare_prediction_features(features)
+raw_predictions = self.neural_network.prediction(prediction_features)
+~~~
+**3. Find Value Bets**
+- Calculate the potential advantage:
+~~~
+edge = predicted_spread - market_spread
+~~~
+- Validate to an advantage between 4.0 and 10.0 spread differential:
+~~~
+if abs(edge) < 4.0 or abs(edge) > 10.0:
+    return False
+~~~
+**4. Wager Determination**
+- Dynamically determines bet amount based on the edge and current bankroll:
+~~~
+base_stake = self.bankroll * 0.02
+edge_multiplier = min(1 + (edge - 4) * 0.1, 2.5)
+~~~
+**5. Evaluation and Execution**
+- P&L (Profit and Loss) is determined for a particular bet
+~~~
+actual_spread = actual_score_home - actual_score_away
+won_bet = actual_spread > position['market_spread']  # For home bets
+~~~
+- Note: Payout assumes even odds (-110).
+- Trade is executed if wager amount is within the bounds of the bankroll.
+
+
+
 
 ### Results
 
@@ -124,8 +174,8 @@ return Y_pred.T
 The neural network we engineered succeeded in accurately predicting NFL scores after
 sufficient training.
 
-Cost *(First Training Round)*: 0.52 \
-Cost *(Last Training Round)*: 0.16 \
+Cost *(First Training Round)*: 0.51 \
+Cost *(Last Training Round)*: 0.17 \
 RMSE Score: 2.52
 
 Randomly Selected Test Results: \
@@ -136,6 +186,45 @@ Predicted: -7.35, Actual: -7.00
 
 Cost Graphs Over Epochs:
 
-<img src="Media/cost_10.png" alt="Cost Graph - 10 Epochs" width="45%"> <img src="Media/cost_100.png" alt="Cost Graph - 100 Epochs" width="45%">
+<img src="Media/cost_10.png" alt="Cost Graph - 10 Epochs" width="40%"> <img src="Media/cost_100.png" alt="Cost Graph - 100 Epochs" width="40%">
 
 *From nn_test.py*
+
+**Betting System**
+
+The overall betting system shows a substantially superior betting strategy compared to standard industry methods.
+
+
+*Backtesting Results:* \
+Selected Bets: **181** \
+Winning Bets: **145** \
+Win Rate: **80.11%** \
+Total P&L: **$25799.73** \
+Total Stake: **$47485.33** \
+ROI: **54.33%** \
+Average Bet Size: **$262.35**
+
+Sample Betting Opportunities:
+
+Game: Philadelphia Eagles vs San Francisco 49ers \
+Market Spread: 3.5 \
+Predicted Spread: -4.1 \
+Edge: 7.6 points \
+Bet Side: away \
+Recommended Stake: $271.49 
+
+Game: Los Angeles Rams vs Tampa Bay Buccaneers \
+Market Spread: 1.0 \
+Predicted Spread: -3.6 \
+Edge: 4.6 points \
+Bet Side: away \
+Recommended Stake: $212.24 
+
+Game: New England Patriots vs New Orleans Saints \
+Market Spread: 3.0 \
+Predicted Spread: -5.2 \
+Edge: 8.2 points \
+Bet Side: away \
+Recommended Stake: $284.28
+
+*From test_betting_system.py*
