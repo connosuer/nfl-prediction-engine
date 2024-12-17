@@ -1,7 +1,15 @@
 # NFL-AI
 
 ### Usage
+After cloning, install the necessary packages using:
+~~~
+pip install -r requirements.txt
+~~~
 
+To test the neural network and feature engineering individually, run the 'nn_test.py'
+and 'test_feature_engineering.py' files. 
+
+To test the betting system as a whole, run the 'test_betting_system.py' file.
 
 ### Data
 **Historic NFL Data** *(https://www.kaggle.com/datasets/tobycrabtree/nfl-scores-and-betting-data)*
