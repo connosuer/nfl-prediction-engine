@@ -11,6 +11,12 @@ and 'test_feature_engineering.py' files.
 
 To test the betting system as a whole, run the 'test_betting_system.py' file.
 
+### Introduction
+The purpose of this project was to determine whether a machine learning approach to sports-betting
+would outperform popular alternative strategies.  Our project utilizes the predictive capabilities of 
+neural networks to assess point spreads and find potential advantageous betting situations for a particular NFL game.
+
+
 ### Data
 **Historic NFL Data** *(https://www.kaggle.com/datasets/tobycrabtree/nfl-scores-and-betting-data)*
 
@@ -18,7 +24,7 @@ To test the betting system as a whole, run the 'test_betting_system.py' file.
 - Games taking place prior to the 2010-2011 season were taken out.
 - Irrelevant and/or noisy potential indicators were removed.
 
-### Line Generation Neural Network
+### Neural Network
 **Neural Network Input Initialization**
 - layers - Specifies the number of neurons in each layer and the configuration of neurons.
 - activation - Activation function for hidden layers.
