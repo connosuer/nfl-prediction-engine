@@ -27,15 +27,27 @@ particular NFL game.
 
 **Feature Engineering**
 
+- Game Metrics Calculated:
+  - Total Points and Point Differential
+  - Is Home Favorite? (binary flag)
+  - Spread Performance & Over/Under Performance
+
+- Team Metrics Calculated:
+  - Average Points For/Against
+  - Spread Cover Rate
+  - Win Streak
+
+- Relative Power Ranking System Initialized
+
 ### Neural Network
-**Neural Network Input Initialization**
+**Input Initialization**
 - layers - Specifies the number of neurons in each layer and the configuration of neurons.
 - activation - Activation function for hidden layers.
 - output_activation - Activation function for output layer.
 - learning - Network learning rate.
 - beta - Momentum coefficient
 
-**Neural Network Component Initialization**
+**Component Initialization**
 - params - Initializes weights and biases using He Initialization.
 - velo - Initializes velocity calculation for momentum optimization.
 
