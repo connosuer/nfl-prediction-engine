@@ -111,7 +111,7 @@ def nn_test():
 
     # Sample predictions vs actual
     print("\nSample Predictions vs Actual:")
-    for i in range(min(10, len(y_test))):
+    for i in range(max(10, len(y_test))):
         print(f"Predicted: {y_pred[i, 0]:.2f}, Actual: {y_test[i, 0]:.2f}")
 
 
