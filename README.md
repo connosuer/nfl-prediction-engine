@@ -32,10 +32,12 @@ particular NFL game.
   - Is Home Favorite? (binary flag)
   - Spread Performance & Over/Under Performance
 
+
 - Team Metrics Calculated:
   - Average Points For/Against
   - Spread Cover Rate
   - Win Streak
+
 
 - Relative Power Ranking System Initialized
 
@@ -128,6 +130,42 @@ return Y_pred.T
 ~~~
 
 ### Betting System
+**1. Initialize Feature Engineering**
+~~~
+processed_data = self.feature_processor.process_initial_features(game_data)
+~~~
+**2. Generate Predictions using neural network**
+~~~
+prediction_features = self._prepare_prediction_features(features)
+raw_predictions = self.neural_network.prediction(prediction_features)
+~~~
+**3. Find Value Bets**
+- Calculate the potential advantage:
+~~~
+edge = predicted_spread - market_spread
+~~~
+- Validate to an advantage between 4.0 and 10.0 spread differential:
+~~~
+if abs(edge) < 4.0 or abs(edge) > 10.0:
+    return False
+~~~
+**4. Wager Determination**
+- Dynamically determines bet amount based on the edge and current bankroll:
+~~~
+base_stake = self.bankroll * 0.02
+edge_multiplier = min(1 + (edge - 4) * 0.1, 2.5)
+~~~
+**5. Evaluation and Execution**
+- P&L (Profit and Loss) is determined for a particular bet
+~~~
+actual_spread = actual_score_home - actual_score_away
+won_bet = actual_spread > position['market_spread']  # For home bets
+~~~
+- Note: Payout assumes even odds (-110).
+- Trade is executed if wager amount is within the bounds of the bankroll.
+
+
+
 
 ### Results
 
